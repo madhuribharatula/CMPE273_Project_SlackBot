@@ -2,11 +2,11 @@ import time
 from slackclient import SlackClient
 from utils import wit_response
 
-BOT_TOKEN = "xoxb-175784139376-C63On7jLWs5QTNneVG4A6Bi0"
+
 CHANNEL_NAME = "general"
 EXAMPLE_COMMAND = ""
-# instantiate Slack & Twilio clients
-slack_client = SlackClient(BOT_TOKEN)
+# instantiate Slack
+slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 def handle_command(command):
     categories = parse_slack_output(command)
