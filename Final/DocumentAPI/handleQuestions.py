@@ -6,23 +6,15 @@ greensheet={}
 client = MongoClient('mongodb://localhost:27017/')
 db=client['greensheetDB']
 def handle_question(categories):
-    print categories
     try:
         subname=categories['subjectname']
-        #print subname
         if subname==None:
-            return 'LOL'
+            return 'Please Enter the Course Code'
+        m = re.search(r"([A-Za-z]+)([0-9]+)", subname.replace(" ", ""))
+        subname = m.group(1) + " " + m.group(2)
         del  categories['subjectname']
-        regx = re.compile(".*"+re.escape(subname)+".", re.IGNORECASE)
+        regx = re.compile(".*"+re.escape(subname)+".*", re.IGNORECASE)
         greensheet=db.docCollection.find_one({"Course":regx})
-        # if greensheet:
-        #     #for key,value in categories.iteritems():
-        #     key ='Instructor:'
-        #     if greensheet.has_key('Instructor:'):
-        #         print  greensheet[key]
-        #         return greensheet[key]
-        # else:
-        #     return "Iam Sorry!!..I dont have information about this subject would you like to upload it's greensheet?"
 
         if greensheet:
             for key,value in categories.iteritems():
@@ -43,7 +35,9 @@ def handle_question(categories):
                     #print  greensheet[key]
                     #return greensheet[k]
         else:
-            return "Iam Sorry!!..I dont have information about this subject would you like to upload it's greensheet?"
+            return "Iam Sorry!!..I dont have information about this course would you like to upload it's greensheet?"
+    except AttributeError:
+        return "Please specify correct course code and number"
     except:
-        print "got an error"
+        return ""
 	pass
