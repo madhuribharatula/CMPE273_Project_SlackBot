@@ -1,9 +1,9 @@
 import time
 from slackclient import SlackClient
 from utils import wit_response
-from DocumentAPI.handleQuestions import handle_question
+from DocumentAPI.handleQuestions import handle_question,handle_greetings
 
-BOT_TOKEN = "Your Bot Token"
+BOT_TOKEN = "You Bot Token"
 CHANNEL_NAME = "general"
 EXAMPLE_COMMAND = ""
 # instantiate Slack & Twilio clients
@@ -11,7 +11,11 @@ slack_client = SlackClient(BOT_TOKEN)
 
 def handle_command(command):
     categories = parse_slack_output(command)
-    msg = handle_question(categories)
+    print categories
+    if(categories.has_key('subjectname')):
+       msg = handle_question(categories)
+    else:
+       msg = handle_greetings(categories)
     return msg
 
 def parse_slack_output(slack_rtm_output):
