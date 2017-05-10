@@ -6,6 +6,7 @@ greensheet={}
 client = MongoClient('mongodb://spartan:spartan@ds131041.mlab.com:31041/greensheets')
 db=client.get_default_database()
 
+#to handle generic questions
 
 def handle_greetings(categories):
     if categories.has_key('bye'):
@@ -29,6 +30,7 @@ def handle_greetings(categories):
        l=db.docCollection.distinct('Course')
        return "I can help you with the info you want regarding course.."+str(l[0])
 
+# handle_question method is used to answer the questions from mongo DB based on categories given byt wit.ai
 
 def handle_question(categories):
     try:
@@ -46,8 +48,6 @@ def handle_question(categories):
         response=''
         if greensheet:
             keyCount = len(categories)
-            print keyCount
-            print categories
             if keyCount > 1 and categories.has_key('instructor') :
                 del categories['instructor']
             for key,value in categories.iteritems():
