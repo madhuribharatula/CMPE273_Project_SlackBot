@@ -5,6 +5,27 @@ categories={}
 greensheet={}
 client = MongoClient('mongodb://localhost:27017/')
 db=client['greensheetDB']
+def handle_greetings(categories):
+    if categories.has_key('bye'):
+       return 'See you soon, Have a great day!!'
+    elif categories.has_key('greetings'):
+       return 'Hello,'+emoji.emojize(':wave:')+'nice to see you!!'
+    elif categories.has_key('hru'):
+       return 'I am fine!!'+emoji.emojize(':smiley:')
+    elif categories.has_key('hrd'):
+       return 'I am doing great, thank you!!'+emoji.emojize(':relaxed:')
+    elif categories.has_key('thank'):
+       return "You are most welcome!!"
+    elif categories.has_key('hwyd'):
+       return "It's great, Thank you for asking!!"
+    elif categories.has_key('name'):
+       return "Hai..I am chocolate,"+emoji.emojize(':wink:')  +" what can I do for you."+emoji.emojize(':simple_smile:')
+    elif categories.has_key('plans'):
+       return "Helping you!!"
+    elif categories.has_key('help'):
+       l=[]
+       l=db.docCollection.distinct('Course')
+       return "I can help you with the info you want regarding course.."+str(l[0])
 def handle_question(categories):
     try:
         subname=categories['subjectname']
