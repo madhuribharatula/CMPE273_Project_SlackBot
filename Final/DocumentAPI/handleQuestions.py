@@ -3,8 +3,10 @@ import re
 import json
 categories={}
 greensheet={}
-client = MongoClient('mongodb://localhost:27017/')
-db=client['greensheetDB']
+client = MongoClient('mongodb://spartan:spartan@ds131041.mlab.com:31041/greensheets')
+db=client.get_default_database()
+
+
 def handle_greetings(categories):
     if categories.has_key('bye'):
        return 'See you soon, Have a great day!!'
@@ -26,6 +28,8 @@ def handle_greetings(categories):
        l=[]
        l=db.docCollection.distinct('Course')
        return "I can help you with the info you want regarding course.."+str(l[0])
+
+
 def handle_question(categories):
     try:
         subname=categories['subjectname']
@@ -56,7 +60,7 @@ def handle_question(categories):
                     #print  greensheet[key]
                     #return greensheet[k]
         else:
-            return "Iam Sorry!!..I dont have information about this course would you like to upload it's greensheet?"
+            return "Iam Sorry!!..I dont have information about this course would you like to upload it's greensheet? through the following link https://documentapi.herokuapp.com/"
     except AttributeError:
         return "Please specify correct course code and number"
     except:

@@ -19,13 +19,12 @@ reload(sys)
 
 
 app = Flask(__name__)
-client = MongoClient('mongodb://localhost:27017/')
-db=client['greensheetDB']
-
+client = MongoClient('mongodb://spartan:spartan@ds131041.mlab.com:31041/greensheets')
+db=client.get_default_database()
 
 #display Upload Html for file Upload
 
-@app.route('/uploadFile')
+@app.route('/')
 def display_uploader():
     return render_template('upload.html')
 
