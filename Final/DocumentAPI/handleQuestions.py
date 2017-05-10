@@ -32,6 +32,8 @@ def handle_greetings(categories):
 
 def handle_question(categories):
     try:
+        categories.pop('bye',None)
+        categories.pop('greetings',None)
         subname=categories['subjectname']
         if subname==None:
             return 'Please Enter the Course Code'
@@ -40,29 +42,33 @@ def handle_question(categories):
         del  categories['subjectname']
         regx = re.compile(".*"+re.escape(subname)+".*", re.IGNORECASE)
         greensheet=db.docCollection.find_one({"Course":regx})
-
+        loop_no = 0
+        response=''
         if greensheet:
+            keyCount = len(categories)
+            print keyCount
+            print categories
+            if keyCount > 1 and categories.has_key('instructor') :
+                del categories['instructor']
             for key,value in categories.iteritems():
-		key = key.replace('_',' ')
-                #regx = re.compile(".*"+re.escape(key)+".*", re.IGNORECASE)
-		#print key
+                key = key.replace('_',' ')
                 for k in greensheet:
                   if key.lower()==k.lower():
-                    print greensheet[k]
-                    return k+" "+greensheet[k]
-                for k in greensheet:
-                  if (re.search(key,k,re.IGNORECASE)):
-                    print greensheet[k]
-                    return k+" "+greensheet[k]
-                  #elif(re.search(key,k,re.IGNORECASE)):
-                   # print greensheet[k]
-                #if greensheet.has_key("Instructor"):
-                    #print  greensheet[key]
-                    #return greensheet[k]
+                    loop_no = 1
+                    response += k+" "+greensheet[k]+"\n"
+                    break
+                if loop_no!=1:
+                    for k in greensheet:
+                        if re.search(key,k,re.IGNORECASE):
+                            loop_no = 2
+                            response += k+" "+greensheet[k]+"\n"
+                            break
+            return response
         else:
-            return "Iam Sorry!!..I dont have information about this course would you like to upload it's greensheet? through the following link https://documentapi.herokuapp.com/"
+            msg = "Iam Sorry!!..I dont have information about this course would you like to upload it's greensheet? Click https://documentapi.herokuapp.com/uploadFile"
+            return msg
     except AttributeError:
         return "Please specify correct course code and number"
     except:
-        return ""
-	pass
+        return "sorry!!"
+    pass
