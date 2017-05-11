@@ -1,9 +1,10 @@
 from pymongo import MongoClient
 import re
 import json
+import emoji
 categories={}
 greensheet={}
-client = MongoClient('mongodb://spartan:spartan@ds131041.mlab.com:31041/greensheets')
+client = MongoClient('mongodb://id:pwd@ds131041.mlab.com:31041/greensheets')
 db=client.get_default_database()
 
 #to handle generic questions
@@ -27,8 +28,14 @@ def handle_greetings(categories):
        return "Helping you!!"
     elif categories.has_key('help'):
        l=[]
+       s=""
        l=db.docCollection.distinct('Course')
-       return "I can help you with the info you want regarding course.."+str(l[0])
+       for i in l:
+            s=s+" "+str(i)
+       return "I can help you with the info you want regarding course.."+s
+    else:
+        return "please provide sufficient information"
+
 
 # handle_question method is used to answer the questions from mongo DB based on categories given byt wit.ai
 
@@ -65,10 +72,10 @@ def handle_question(categories):
                             break
             return response
         else:
-            msg = "Iam Sorry!!..I dont have information about this course would you like to upload it's greensheet? Click https://documentapi.herokuapp.com/uploadFile"
+            msg = "Iam Sorry!!..I dont have information about this course would you like to upload it's greensheet? Click https://documentapi.herokuapp.com"
             return msg
     except AttributeError:
         return "Please specify correct course code and number"
     except:
-        return "sorry!!"
+        return "try again!!"
     pass
