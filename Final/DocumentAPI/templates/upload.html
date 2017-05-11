@@ -7,8 +7,24 @@
 div {
     background-color: lightblue;
 }
-
 </style>
+<script type="text/javascript" language="javascript">
+function checkfile(sender) {
+    var validExts = new Array(".docx");
+    var fileExt = sender.value;
+    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+    if (validExts.indexOf(fileExt) < 0) {
+      alert("Invalid file selected, valid files are of " +
+               validExts.toString() + " types.");
+      document.getElementById("submitid").disabled = true;
+      return false;
+
+    }
+    document.getElementById("submitid").disabled = false;
+    return true;
+}
+</script>
+
   </head>
   <body>
     <div class="container" align="center">
@@ -18,9 +34,9 @@ div {
       <hr/>
       <div>
       
-      <form action="uploader" method="post" enctype="multipart/form-data" align="left">
-        <input type="file" name="file"><br /><br />
-        <input type="submit" class="btn btn-info" value="Upload"><style>
+      <form action="uploader" method="post" enctype="multipart/form-data">
+        <input type="file" id="file_name" name="file" onChange="return checkfile(this);" ><br /><br />
+        <input type="submit" class="btn btn-info" value="Upload" id="submitid" ><style>
 </style>
       </form>
       </div>
