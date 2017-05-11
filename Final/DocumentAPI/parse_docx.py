@@ -19,7 +19,7 @@ reload(sys)
 
 
 app = Flask(__name__)
-client = MongoClient('mongodb://spartan:spartan@ds131041.mlab.com:31041/greensheets')
+client = MongoClient('mongodb://id:pwd@ds131041.mlab.com:31041/greensheets')
 db=client.get_default_database()
 
 #display Upload Html for file Upload
@@ -120,6 +120,10 @@ def get_content(value):
 
 if __name__=='__main__':
   app.run(debug=True, port=8080)
+
+
+
+
 
 
 
